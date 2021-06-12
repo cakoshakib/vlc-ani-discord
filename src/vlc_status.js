@@ -3,18 +3,13 @@ const config = require('./utils/config')
 
 const client = new vlc.Client({ address: 'localhost', password: config.VLC_PW, port: config.VLC_PORT});
 
-getStatus = async () => {
-  const status = await client.getStatus()
-  console.log(status)
-}
-
-getStatus()
 module.exports =
   getStatus = async () => {
+    let status = null
     try {
-      const status = await client.getStatus()
-      return status
+      status = await client.getStatus()
     } catch (e) {
-      return null
+      console.log('Error retrieving VLC status')
     }
+    return status
   }

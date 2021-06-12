@@ -1,7 +1,7 @@
 const DiscordRPC = require('discord-rpc')
 const config = require('./utils/config')
-const status = require('./vlc-status')
-const parser = require('./utils/title-parser')
+const status = require('./vlc_status')
+const parser = require('./utils/title_parser')
 
 const rpc = new DiscordRPC.Client({ transport: 'ipc' });
 
@@ -9,6 +9,10 @@ const clientId = config.DISCORD_CLIENTID;
 
 const setStatus = async () => {
   const vlc_status = await status()
+  if (vlc_status === null) {
+    rpc.clearActivity()
+    return
+  }
   const meta_data = vlc_status.information.category.meta
   console.log(meta_data)
 
