@@ -9,11 +9,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.21.1",
     "discord-rpc": "^3.2.0",
     "dotenv": "^10.0.0",
     "node-fetch": "^2.6.1",
     "open": "^8.2.0",
     "request": "^2.88.2",
-    "vlc.js": "^4.0.0"
+    "xml-js": "^1.6.11"
   }
 }

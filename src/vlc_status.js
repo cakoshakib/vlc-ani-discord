@@ -1,15 +1,61 @@
-const vlc = require('vlc.js');
+const axios = require('axios')
 const config = require('./utils/config')
+const convert = require('xml-js')
 
-const client = new vlc.Client({ address: 'localhost', password: config.VLC_PW, port: config.VLC_PORT});
+const getXMLString = async () => {
+  const baseUrl = `http://localhost:${config.VLC_PORT}/requests/status.xml`
 
-module.exports =
-  getStatus = async () => {
-    let status = null
-    try {
-      status = await client.getStatus()
-    } catch (e) {
-      console.log('Error retrieving VLC status')
+  const response = await axios.get(baseUrl, {
+    auth: {
+      username: '',
+      password: config.VLC_PW
     }
-    return status
+  })
+
+  return response.data
+}
+
+const convertXML = (xmlString) => {
+  const options = {
+    compact: true,
+    spaces: 4,
+    trim: true,
+    ignoreDeclaration: true,
+    ignoreInstruction: true,
+    ignoreComment: true,
+    ignoreCdata: true,
+    ignoreDoctype: true,
+  };
+
+  return convert.xml2json(xmlString, options)
+}
+
+const getTitle = (xmlObject) => {
+  const metaData = xmlObject.information.category[0]
+  const attributes = metaData.info.map(element => element._attributes.name)
+  const names = metaData.info.map(element => element._text)
+  
+  if(attributes.includes('title')) {
+    return names[attributes.indexOf('title')]
+  } else if (attributes.includes('filename')) {
+    return names[attributes.indexOf('filename')]
   }
+
+  return ''
+}
+
+const getStatus = async () => {
+  const xmlString = await getXMLString()
+  const xmlObject = JSON.parse(convertXML(xmlString)).root
+
+  const status = {
+    'title': getTitle(xmlObject),
+    'length': xmlObject.length._text,
+    'time': xmlObject.time._text,
+    'state': xmlObject.state._text,
+  }
+
+  return status
+}
+
+module.exports = getStatus
