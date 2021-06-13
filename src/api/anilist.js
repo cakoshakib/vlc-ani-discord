@@ -74,9 +74,9 @@ const mediaIdList = async (title) => {
   return data.data.Page.media
 }
 
-const getMediaId = async () => {
+const getMediaId = async (title) => {
   const watchingList = await userWatchingList()
-  const mediaList = await mediaIdList('A Certain Scientific')
+  const mediaList = await mediaIdList(title)
   const userMediaIds = watchingList.map(media => media.mediaId)
   const mediaIds = mediaList.map(media => media.id) 
 
@@ -88,5 +88,40 @@ const getMediaId = async () => {
   }
 }
 
+const updateEpisodeCount = async (mediaId, episode) => {
+  const query = `
+  mutation ($mediaId: Int, $progress: Int) {
+    SaveMediaListEntry (mediaId: $mediaId, progress: $progress) {
+        id
+        progress
+    }
+  }
+  `
+  
+  const variables = {
+    mediaId: mediaId,
+    progress: episode
+  }
 
-getMediaId().then(res => console.log(res))
+  const url = 'https://graphql.anilist.co',
+    options = {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${config.ANILIST_TOKEN}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        query: query,
+        variables: variables
+      })
+    };
+
+  const response = await fetch(url, options)
+  const data = await response.json()
+  
+  return data
+  
+}
+
+getMediaId('A Certain Scientific').then(res => updateEpisodeCount(res, 6).then(data => console.log(data)))

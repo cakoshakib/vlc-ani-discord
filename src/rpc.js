@@ -1,6 +1,6 @@
 const DiscordRPC = require('discord-rpc')
 const config = require('./utils/config')
-const status = require('./vlc_status')
+const status = require('./vlc')
 const titleParser = require('./utils/title_parser')
 
 const rpc = new DiscordRPC.Client({ transport: 'ipc' });
