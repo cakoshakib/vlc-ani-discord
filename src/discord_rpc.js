@@ -13,10 +13,7 @@ const setStatus = async () => {
     rpc.clearActivity()
     return
   }
-  const meta_data = vlc_status.information.category.meta
-  console.log(meta_data)
-
-  const unparsedTitle = meta_data.title || meta_data.filename
+  const unparsedTitle = vlc_status.title
   const stateCapitalized = vlc_status.state.charAt(0).toUpperCase() + vlc_status.state.slice(1)
   
   const parsedTitle = parser(unparsedTitle)
@@ -25,7 +22,7 @@ const setStatus = async () => {
     details: parsedTitle.title,
     state: stateCapitalized,
     instance: true,
-    largeImageKey: 'vlc_icon',
+    largeImageKey: 'rem',
     largeImageText: 'Weeb Trash',
   }
   

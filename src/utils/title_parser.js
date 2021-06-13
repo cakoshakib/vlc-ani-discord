@@ -13,6 +13,10 @@ const splitDash = (title) => {
   }
 }
 
+const removeFileExtension= (title) => {
+  return title.substring(0, title.lastIndexOf('.'))
+}
+
 const parseTitle = (title) => {
   let parsedTitle = title
 
@@ -22,6 +26,10 @@ const parseTitle = (title) => {
 
   if (title.includes(')')) {
     parsedTitle = removeParends(parsedTitle)
+  }
+
+  if (title.includes('.mkv') || title.includes('.mp4')) {
+    parsedTitle = removeFileExtension(parsedTitle)
   }
 
   if (title.includes('-')) {
