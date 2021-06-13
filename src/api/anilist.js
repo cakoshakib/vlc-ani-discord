@@ -124,11 +124,35 @@ const updateEpisodeCount = async (mediaId, episode) => {
   
 }
 
+const currentEpisode = async (title) => {
+  const mediaId = await getMediaId(title) 
+  
+  const query = `
+  query ($mediaId: Int, $userName: String) {
+    MediaList (mediaId: $mediaId, userName: $userName) {
+        progress
+    }
+  } 
+  `
+  
+  const variables = {
+    mediaId: mediaId,
+    userName: config.ANILIST_USER
+  }
+
+  const data = await getData(query, variables)
+  
+  return data.data.MediaList.progress
+}
+
 const anilistUpdate = async (title, episode) => {
   const mediaId = await getMediaId(title)
   const response = await updateEpisodeCount(mediaId, episode)
   console.log(response)
 }
 
-module.exports = anilistUpdate
+module.exports = {
+  anilistUpdate,
+  currentEpisode
+}
 

@@ -9,6 +9,13 @@ const rpc = new DiscordRPC.Client({ transport: 'ipc' });
 
 const clientId = config.DISCORD_CLIENTID;
 
+const savedInfo = {
+  title: '',
+  episode: '',
+}
+
+let updateAni = true
+
 const setStatus = async () => {
   const vlc_status = await status()
   if (vlc_status === null) {
@@ -17,6 +24,12 @@ const setStatus = async () => {
   }
   const parsedTitle = titleParser(vlc_status.title)
   const stateCapitalized = vlc_status.state.charAt(0).toUpperCase() + vlc_status.state.slice(1)
+
+  if (savedInfo.title !== parsedTitle.title || savedInfo.episode !== parsedTitle.episode) {
+    savedInfo.title = parsedTitle.title
+    savedInfo.episode = parsedTitle.episode
+    updateAni = true
+  }
   
   const activity = {
     details: parsedTitle.title,
@@ -36,9 +49,10 @@ const setStatus = async () => {
     activity.endTimestamp = timeRemaining
   } 
 
-  if ((vlc_status.length - vlc_status.time) < 480) {
+  if ((vlc_status.length - vlc_status.time) < 480 && updateAni) {
     console.log('Attempting to update anilist...')
-    await anilistUpdate(parsedTitle.title, Number(parsedTitle.episode))
+    await ani.anilistUpdate(parsedTitle.title, Number(parsedTitle.episode))
+    updateAni = false
   }
   
   rpc.setActivity(activity);
@@ -47,6 +61,7 @@ const setStatus = async () => {
 rpc.on('ready', () => {
   console.log('Logged in as', rpc.user.username)
   
+
   setStatus()
   setInterval(() => {
     setStatus()
