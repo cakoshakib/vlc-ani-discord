@@ -2,6 +2,8 @@ const DiscordRPC = require('discord-rpc')
 const config = require('./utils/config')
 const status = require('./vlc')
 const titleParser = require('./utils/title_parser')
+const ani = require('./api/anilist')
+const anilistUpdate = require('./api/anilist')
 
 const rpc = new DiscordRPC.Client({ transport: 'ipc' });
 
@@ -33,6 +35,11 @@ const setStatus = async () => {
     const timeRemaining = Math.round(currentEpochSeconds + (vlc_status.length - vlc_status.time))
     activity.endTimestamp = timeRemaining
   } 
+
+  if ((vlc_status.length - vlc_status.time) < 480) {
+    console.log('Attempting to update anilist...')
+    await anilistUpdate(parsedTitle.title, Number(parsedTitle.episode))
+  }
   
   rpc.setActivity(activity);
 }

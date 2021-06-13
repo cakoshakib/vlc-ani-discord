@@ -9,9 +9,11 @@ const removeParends = (title) => {
 const getEpisode = (details) => {
   const lowercaseDetails = details.toLowerCase()
   if (lowercaseDetails.includes('episode')) {
-    return(details.substring(lowercaseDetails.indexOf('episode') + 1).trim())
-  } else if (details.toLowerCase().includes('e')) {
-    return(details.substring(lowercaseDetails.indexOf('e') + 1).trim())
+    return(details.substring(lowercaseDetails.lastIndexOf('episode') + 8).trim())
+  } else if (lowercaseDetails.includes('ep')) {
+    return(details.substring(lowercaseDetails.lastIndexOf('ep') + 2).trim())
+  } else if (lowercaseDetails.includes('e')) {
+    return(details.substring(lowercaseDetails.lastIndexOf('e') + 1).trim())
   } else if (!isNaN(details)) {
     return(details)
   }

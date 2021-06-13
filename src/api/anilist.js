@@ -124,4 +124,11 @@ const updateEpisodeCount = async (mediaId, episode) => {
   
 }
 
-getMediaId('A Certain Scientific').then(res => updateEpisodeCount(res, 6).then(data => console.log(data)))
+const anilistUpdate = async (title, episode) => {
+  const mediaId = await getMediaId(title)
+  const response = await updateEpisodeCount(mediaId, episode)
+  console.log(response)
+}
+
+module.exports = anilistUpdate
+
