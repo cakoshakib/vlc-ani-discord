@@ -10,6 +10,7 @@ const ANILIST_AUTH = process.env.ANILIST_AUTH
 const ANILIST_ID = process.env.ANILIST_CLIENT_ID
 const ANILIST_SECRET = process.env.ANILSIT_CLIENT_SECRET
 const ANILIST_REDIRECT = process.env.ANILIST_REDIRECT
+const ANILIST_USER = '1mp'
 
 module.exports = {
   VLC_PW,
@@ -18,5 +19,6 @@ module.exports = {
   ANILIST_AUTH,
   ANILIST_ID,
   ANILIST_REDIRECT,
-  ANILIST_SECRET
+  ANILIST_SECRET,
+  ANILIST_USER
 }
