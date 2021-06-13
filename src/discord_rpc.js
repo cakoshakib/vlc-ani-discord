@@ -1,7 +1,7 @@
 const DiscordRPC = require('discord-rpc')
 const config = require('./utils/config')
 const status = require('./vlc_status')
-const parser = require('./utils/title_parser')
+const titleParser = require('./utils/title_parser')
 
 const rpc = new DiscordRPC.Client({ transport: 'ipc' });
 
@@ -13,10 +13,8 @@ const setStatus = async () => {
     rpc.clearActivity()
     return
   }
-  const unparsedTitle = vlc_status.title
+  const parsedTitle = titleParser(vlc_status.title)
   const stateCapitalized = vlc_status.state.charAt(0).toUpperCase() + vlc_status.state.slice(1)
-  
-  const parsedTitle = parser(unparsedTitle)
   
   const activity = {
     details: parsedTitle.title,
@@ -26,8 +24,8 @@ const setStatus = async () => {
     largeImageText: 'Weeb Trash',
   }
   
-  if (parsedTitle.details) {
-    activity.state += ` - ${parsedTitle.details}`
+  if (parsedTitle.episode) {
+    activity.state += ` - Episode ${parsedTitle.episode}`
   }
   
   const currentEpochSeconds = Date.now() / 1000
@@ -40,12 +38,12 @@ const setStatus = async () => {
 }
 
 rpc.on('ready', () => {
-  console.log('logged in as', rpc.user.username)
+  console.log('Logged in as', rpc.user.username)
+  
+  setStatus()
+  setInterval(() => {
+    setStatus()
+  }, 15e3)
 });
 
-rpc
-  .login({ clientId })
-  .then(() => {
-    setInterval(setStatus, 5000);
-  })
-  .catch(console.error);
+rpc.login({ clientId }).catch(console.error);

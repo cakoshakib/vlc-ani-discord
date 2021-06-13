@@ -6,19 +6,41 @@ const removeParends = (title) => {
   return title.replace(/ *\([^)]*\) */g, "")
 }
 
-const splitDash = (title) => {
-  return {
-    'title': title.substring(0, title.indexOf('-')).trim(),
-    'details': title.substring(title.indexOf('-') + 1).trim()
+const getEpisode = (details) => {
+  const lowercaseDetails = details.toLowerCase()
+  if (lowercaseDetails.includes('episode')) {
+    return(details.substring(lowercaseDetails.indexOf('episode') + 1).trim())
+  } else if (details.toLowerCase().includes('e')) {
+    return(details.substring(lowercaseDetails.indexOf('e') + 1).trim())
+  } else if (!isNaN(details)) {
+    return(details)
   }
 }
 
-const removeFileExtension= (title) => {
+const splitDash = (title) => {
+  const parsedTitle = title.substring(0, title.indexOf('-')).trim()
+  const details = title.substring(title.indexOf('-') + 1).trim()
+
+  const episode = getEpisode(details)
+  
+  return {
+    'title': parsedTitle,
+    'details': details,
+    'episode': episode
+  }
+}
+
+const removeFileExtension = (title) => {
   return title.substring(0, title.lastIndexOf('.'))
+}
+
+const replaceDelimiter = (title) => {
+  return title.replace(/\./g, ' ').replace(/\_/g, ' ')
 }
 
 const parseTitle = (title) => {
   let parsedTitle = title
+  title = title.trim()
 
   if (title.includes(']')) {
     parsedTitle = removeBracketed(parsedTitle)
@@ -32,9 +54,14 @@ const parseTitle = (title) => {
     parsedTitle = removeFileExtension(parsedTitle)
   }
 
+  if (!(parsedTitle.includes(' '))) {
+    parsedTitle = replaceDelimiter(parsedTitle)
+  }
+
   if (title.includes('-')) {
     return splitDash(parsedTitle)
   }
+
 
   return {
     'title': parsedTitle,
