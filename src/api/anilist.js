@@ -1,5 +1,6 @@
 const fetch = require('node-fetch')
 const config = require('../utils/config')
+const logger = require('../utils/logger')
 
 const getData = async (query, variables) => {
   const url = 'https://graphql.anilist.co',
@@ -148,7 +149,7 @@ const currentEpisode = async (title) => {
 const anilistUpdate = async (title, episode) => {
   const mediaId = await getMediaId(title)
   const response = await updateEpisodeCount(mediaId, episode)
-  console.log(response)
+  logger.info(response)
 }
 
 module.exports = {

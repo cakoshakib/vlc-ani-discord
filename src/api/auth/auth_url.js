@@ -1,6 +1,7 @@
 // Generates and opens authentication URL to retrieve Code
 
 const config = require('../../utils/config')
+const logger = require('../../utils/logger')
 const open = require('open')
 
 const baseUrl = 'https://anilist.co/api/v2/oauth/authorize'
@@ -13,4 +14,4 @@ const completeUrl = `${baseUrl}?client_id=${client_id}&redirect_uri=${redirect_u
 
 open(completeUrl)
 
-console.log(completeUrl)
+logger.info(completeUrl)

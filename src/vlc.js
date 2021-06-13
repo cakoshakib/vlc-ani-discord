@@ -50,7 +50,6 @@ const getStatus = async () => {
     xmlString = await getXMLString()
   }
   catch (error) {
-    console.log('Error retrieving VLC status')
     return null
   }
   const xmlObject = JSON.parse(convertXML(xmlString)).root

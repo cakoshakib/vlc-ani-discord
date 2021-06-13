@@ -2,6 +2,7 @@
 
 const request = require('request')
 const config = require('../../utils/config')
+const logger = require('../../utils/logger')
 
 const options = {
   uri: 'https://anilist.co/api/v2/oauth/token',
@@ -21,7 +22,7 @@ const options = {
 
 request(options, function (error, response, body) {
   if (!error && response.statusCode == 200) {
-    console.log(body.access_token);
+    logger.info(body.access_token);
   }
-  console.log(response.statusCode)
+  logger.info(response.statusCode)
 });
