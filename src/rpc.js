@@ -4,6 +4,7 @@ const status = require('./vlc')
 const titleParser = require('./utils/title_parser')
 const ani = require('./api/anilist')
 const logger = require('./utils/logger')
+const icon = require('./utils/icon.js')
 
 const rpc = new DiscordRPC.Client({ transport: 'ipc' });
 
@@ -36,7 +37,7 @@ const setStatus = async () => {
     updateAni = true
   }
   
-  const icons = ['emilia', 'rem', 'kallen', 'lelouch', 'subaru', 'khun', 'lloyd', 'yuji', 'zenitsu', 'tanjiro', 'gojo', 'arima', 'kaori', 'senku', 'mayuri', 'okabe', 'killua', 'gon', 'levi', 'mikasa', 'eren', 'norman', 'armin', 'garfiel', 'mob']
+  const icons = icon
   const randPick = Math.floor(Math.random() * icons.length)
   
   // Discord Rich Presence Activity
