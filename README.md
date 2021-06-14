@@ -1,7 +1,5 @@
 # vlc-ani-discord
 
-**VERY** Work in Progress, do not try using this yet :^)
-
 vlc-ani-discord is a tool made for Anime watchers using VLC. Integrates VLC Media Player with Discord to display rich presence status text. Automatically updates user's AniList episode count when playback has completed using AniList's GraphQL API.
 
 ## Prerequisites 

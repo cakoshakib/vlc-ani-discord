@@ -36,12 +36,15 @@ const setStatus = async () => {
     updateAni = true
   }
   
+  const icons = ['emilia', 'rem', 'kallen', 'lelouch', 'subaru', 'khun', 'lloyd', 'yuji', 'zenitsu', 'tanjiro', 'gojo', 'arima', 'kaori', 'senku', 'mayuri', 'okabe', 'killua', 'gon', 'levi', 'mikasa', 'eren', 'norman', 'armin', 'garfiel', 'mob']
+  const randPick = Math.floor(Math.random() * icons.length)
+  
   // Discord Rich Presence Activity
   const activity = {
     details: parsedTitle.title,
     state: stateCapitalized,
     instance: true,
-    largeImageKey: 'rem',
+    largeImageKey: icons[randPick],
     largeImageText: 'Weeb Trash',
   }
   
