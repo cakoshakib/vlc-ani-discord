@@ -18,7 +18,7 @@ Icon cycles between random anime characters
 
 ### Initial Setup 
 - Run `npm install`
-- Rename .env_template to .env
+- Rename `.env_template` to `.env`
 
 ### AniList
 - Input your AniList username into `ANILIST_USERNAME` in the `.env`

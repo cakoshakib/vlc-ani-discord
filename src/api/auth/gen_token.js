@@ -1,17 +1,17 @@
 // Converts generated authorization code into usable JWT token
 
-const request = require('request')
+const axios = require('axios')
 const config = require('../../utils/config')
 const logger = require('../../utils/logger')
 
 const options = {
-  uri: 'https://anilist.co/api/v2/oauth/token',
+  url: 'https://anilist.co/api/v2/oauth/token',
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
   },
-  json: {
+  data: {
     'grant_type': 'authorization_code',
     'client_id': `${config.ANILIST_ID}`,
     'client_secret': `${config.ANILIST_SECRET}`,
@@ -20,9 +20,10 @@ const options = {
   }
 };
 
-request(options, function (error, response, body) {
-  if (!error && response.statusCode == 200) {
-    logger.info(body.access_token);
+axios(options).then((response) => {
+  if (response.status == 200) {
+    logger.info(response.data.access_token)
+  } else {
+    logger.info(response)
   }
-  logger.info(response.statusCode)
 });
