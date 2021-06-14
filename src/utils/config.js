@@ -10,7 +10,7 @@ const ANILIST_AUTH = process.env.ANILIST_AUTHTOKEN
 const ANILIST_ID = process.env.ANILIST_CLIENT_ID
 const ANILIST_SECRET = process.env.ANILIST_CLIENT_SECRET
 const ANILIST_REDIRECT = process.env.ANILIST_REDIRECT
-const ANILIST_USER = '1mp'
+const ANILIST_USER = process.env.ANILIST_USERNAME
 const ANILIST_TOKEN = process.env.ANILIST_JWT
 
 module.exports = {
