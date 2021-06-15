@@ -1,22 +1,41 @@
 const removeBracketed = (title) => {
-  return title.replace(/ *\[[^)]*\] */g, "")
+  return title.replace(/[\s_.]*\[[^\]]*\][\s_.]*/g, "")
 }
 
 const removeParends = (title) => {
   return title.replace(/ *\([^)]*\) */g, "")
 }
 
+const validEp = (episode) => {
+  return episode && !isNaN(episode[1])
+}
+
 const getEpisode = (details) => {
-  const lowercaseDetails = details.toLowerCase()
-  if (lowercaseDetails.includes('episode')) {
-    return(details.substring(lowercaseDetails.lastIndexOf('episode') + 8).trim())
-  } else if (lowercaseDetails.includes('ep')) {
-    return(details.substring(lowercaseDetails.lastIndexOf('ep') + 2).trim())
-  } else if (lowercaseDetails.includes('e')) {
-    return(details.substring(lowercaseDetails.lastIndexOf('e') + 1).trim())
-  } else if (!isNaN(details)) {
-    return(details)
+  details = details.toLowerCase()
+  let parts = [details]
+  
+  if (details.includes('-')) {
+    parts = parts.concat(details.substring(0, details.indexOf('-')).trim())
+    parts = parts.concat(details.substring(details.indexOf('-') + 1).trim())
   }
+
+  
+  for (let part of parts) {
+    // ep1, episode 1, e1
+    let match = part.match(/(episode|ep|e)\s?(\d+)/)
+    if (match && !isNaN(match[2])) return match[2]
+    // 5x3 (season 5 ep 3)
+    match = part.match(/x(\d+)/)
+    if (validEp(match)) return match[1]
+    // 1v3 (episode 1 season 3)
+    match = part.match(/(\d+)v/)
+    if (validEp(match)) return match[1]
+    // 1 (just the number)
+    match = part.match(/(\d+)$/)
+    if (validEp(match)) return match[1]
+  }
+
+  return ''
 }
 
 const splitDash = (title) => {
@@ -44,6 +63,10 @@ const parseTitle = (title) => {
   let parsedTitle = title
   title = title.trim()
 
+  if (title.includes('.mkv') || title.includes('.mp4')) {
+    parsedTitle = removeFileExtension(parsedTitle)
+  }
+
   if (title.includes(']')) {
     parsedTitle = removeBracketed(parsedTitle)
   }
@@ -52,11 +75,7 @@ const parseTitle = (title) => {
     parsedTitle = removeParends(parsedTitle)
   }
 
-  if (title.includes('.mkv') || title.includes('.mp4')) {
-    parsedTitle = removeFileExtension(parsedTitle)
-  }
-
-  if (!(parsedTitle.includes(' '))) {
+  if (!parsedTitle.includes(' ')) {
     parsedTitle = replaceDelimiter(parsedTitle)
   }
 
@@ -64,9 +83,11 @@ const parseTitle = (title) => {
     return splitDash(parsedTitle)
   }
 
+  const ep = getEpisode(parsedTitle)
 
   return {
     'title': parsedTitle,
+    'episode': ep
   }
 }
 
