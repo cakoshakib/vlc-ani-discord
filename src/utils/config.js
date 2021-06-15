@@ -4,7 +4,7 @@ require('dotenv').config()
 const VLC_PW = process.env.VLC_PW
 const VLC_PORT = process.env.VLC_PORT || 8080
 
-const DISCORD_CLIENTID = '853338108045426688'
+const DISCORD_CLIENTID = process.env.DISCORD_CLIENT || '853338108045426688'
 
 const ANILIST_AUTH = process.env.ANILIST_AUTHTOKEN
 const ANILIST_ID = process.env.ANILIST_CLIENT_ID

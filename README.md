@@ -36,7 +36,12 @@ Icon cycles between random anime characters
 - Input password into `VLC_PW` of the `.env` file
 
 ### Running the Program
-- Open an Anime episode and run `node ./src/rpc.js`!
+- Open an Anime episode and run `npm start`!
+
+## Notes
+- If you would like to use the AniList episode updating feature, the anime must already be in your "Watching" list on AniList.
+- The parser may fail in retrieving the episode number and/or title if it is inordinary, please submit an issue if this occurs.
+- If you would like to change the icon/name displayed on Discord Rich Presence, create your own Application in the [Discord Developer portal](https://discord.com/developers/applications) and change the Client ID in the `.env` file. Then simply edit `./src/utils/icon.js` with the name(s) of your uploaded art assets.
 
 ---
 ## Disclaimer 

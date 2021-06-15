@@ -48,20 +48,22 @@ const getStatus = async () => {
   let xmlString
   try {
     xmlString = await getXMLString()
-  }
-  catch (error) {
+  } catch (error) {
     return null
   }
   const xmlObject = JSON.parse(convertXML(xmlString)).root
 
-  const status = {
-    'title': getTitle(xmlObject),
-    'length': xmlObject.length._text,
-    'time': xmlObject.time._text,
-    'state': xmlObject.state._text,
+  try {
+    const status = {
+      'title': getTitle(xmlObject),
+      'length': xmlObject.length._text,
+      'time': xmlObject.time._text,
+      'state': xmlObject.state._text,
+    }
+    return status
+  } catch (error) {
+    return null
   }
-
-  return status
 }
 
 module.exports = getStatus
