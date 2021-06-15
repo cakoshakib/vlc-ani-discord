@@ -11,7 +11,6 @@ const validEp = (episode) => {
 }
 
 const getEpisode = (details) => {
-  details = details.toLowerCase()
   let parts = [details]
   
   if (details.includes('-')) {
@@ -19,30 +18,29 @@ const getEpisode = (details) => {
     parts = parts.concat(details.substring(details.indexOf('-') + 1).trim())
   }
 
-  
   for (let part of parts) {
     // ep1, episode 1, e1
-    let match = part.match(/(episode|ep|e)\s?(\d+)/)
-    if (match && !isNaN(match[2])) return match[2]
+    let match = part.match(/(episode\s?|ep|e)(\d+)/i)
+    if (match && !isNaN(match[2])) return [part.replace(match[0], ''), match[2]]
     // 5x3 (season 5 ep 3)
-    match = part.match(/x(\d+)/)
-    if (validEp(match)) return match[1]
+    match = part.match(/\d+x(\d+)/i)
+    if (validEp(match)) return [part.replace(match[0], ''), match[1]]
     // 1v3 (episode 1 season 3)
-    match = part.match(/(\d+)v/)
-    if (validEp(match)) return match[1]
+    match = part.match(/(\d+)v\d+/i)
+    if (validEp(match)) return [part.replace(match[0], ''), match[1]]
     // 1 (just the number)
-    match = part.match(/(\d+)$/)
-    if (validEp(match)) return match[1]
+    match = part.match(/(\d+)$/i)
+    if (validEp(match)) return [part.replace(match[0], ''), match[1]]
   }
 
-  return ''
+  return [part, '']
 }
 
 const splitDash = (title) => {
   const parsedTitle = title.substring(0, title.indexOf('-')).trim()
   const details = title.substring(title.indexOf('-') + 1).trim()
 
-  const episode = getEpisode(details)
+  const episode = getEpisode(details)[1]
   
   return {
     'title': parsedTitle,
@@ -83,11 +81,11 @@ const parseTitle = (title) => {
     return splitDash(parsedTitle)
   }
 
-  const ep = getEpisode(parsedTitle)
+  const info = getEpisode(parsedTitle)
 
   return {
-    'title': parsedTitle,
-    'episode': ep
+    'title': info[0].trim(),
+    'episode': info[1].trim()
   }
 }
 

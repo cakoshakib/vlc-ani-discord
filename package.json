@@ -2,9 +2,10 @@
   "name": "vlcani",
   "version": "1.0.0",
   "description": "Anilist - VLC - Discord integration",
-  "main": "index.js",
+  "main": "./src/rpc.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./src/rpc.js",
+    "test": "jest"
   },
   "author": "cakoshakib",
   "license": "MIT",
@@ -15,5 +16,8 @@
     "node-fetch": "^2.6.1",
     "open": "^8.2.0",
     "xml-js": "^1.6.11"
+  },
+  "devDependencies": {
+    "jest": "^27.0.4"
   }
 }
