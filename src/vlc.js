@@ -35,10 +35,10 @@ const getTitle = (xmlObject) => {
   const attributes = metaData.info.map(element => element._attributes.name)
   const names = metaData.info.map(element => element._text)
   
-  if(attributes.includes('title')) {
-    return names[attributes.indexOf('title')]
-  } else if (attributes.includes('filename')) {
+  if (attributes.includes('filename')) {
     return names[attributes.indexOf('filename')]
+  } else if(attributes.includes('title')) {
+    return names[attributes.indexOf('title')]
   }
 
   return ''

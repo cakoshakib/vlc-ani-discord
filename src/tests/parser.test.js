@@ -50,7 +50,7 @@ describe('Parses episode', () => {
       expect(result.title).toBe('Re:Zero')
       expect(result.episode).toBe('2')
     })
-    
+
     test('Epx', () => {
       let result = title_parser('Re:Zero - Ep3')
       expect(result.title).toBe('Re:Zero')
@@ -62,11 +62,11 @@ describe('Parses episode', () => {
     })
 
     test('Ex', () => {
-      let result = title_parser('Re:Zero - E3')    
+      let result = title_parser('Re:Zero - E3')
       expect(result.title).toBe('Re:Zero')
       expect(result.episode).toBe('3')
 
-      result = title_parser('Re:Zero E3')    
+      result = title_parser('Re:Zero E3')
       expect(result.title).toBe('Re:Zero')
       expect(result.episode).toBe('3')
     })
@@ -97,14 +97,14 @@ describe('Parses episode', () => {
 describe('Fixes delimiting', () => {
   test('Underscore delimiters', () => {
     let result = title_parser('[CBM]_Code_Geass_-_02_-_The_White_Knight_Awakens_[HEVC_1080p_10bit]_[6DB821B1]')
-    
+
     expect(result.title).toBe('Code Geass')
     expect(result.episode).toBe('02')
   })
 
   test('Period delimiters', () => {
     let result = title_parser('[CBM].Code.Geass.-.02.-.The.White.Knight.Awakens.[HEVC.1080p.10bit].[6DB821B1]')
-    
+
     expect(result.title).toBe('Code Geass')
     expect(result.episode).toBe('02')
   })

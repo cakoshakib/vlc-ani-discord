@@ -149,7 +149,7 @@ const currentEpisode = async (title) => {
 const anilistUpdate = async (title, episode) => {
   const mediaId = await getMediaId(title)
   const response = await updateEpisodeCount(mediaId, episode)
-  logger.info(response)
+  logger.info('Updated AniList:', title, ' - Episode', response.data.SaveMediaListEntry.progress)
 }
 
 module.exports = {

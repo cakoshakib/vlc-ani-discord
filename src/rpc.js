@@ -6,7 +6,9 @@ const ani = require('./api/anilist')
 const logger = require('./utils/logger')
 const icons = require('./utils/icon.js')
 
-const rpc = new DiscordRPC.Client({ transport: 'ipc' });
+const rpc = new DiscordRPC.Client({
+  transport: 'ipc'
+});
 
 const clientId = config.DISCORD_CLIENTID;
 
@@ -30,35 +32,41 @@ const setStatus = async () => {
   const parsedTitle = titleParser(vlc_status.title)
   const stateCapitalized = vlc_status.state.charAt(0).toUpperCase() + vlc_status.state.slice(1)
 
+
   // Check if AniList needs to potentially be updated again
   if (savedInfo.title !== parsedTitle.title || savedInfo.episode !== parsedTitle.episode) {
     savedInfo.title = parsedTitle.title
     savedInfo.episode = parsedTitle.episode
     updateAni = true
   }
-  
+
   const randPick = Math.floor(Math.random() * icons.length)
-  
+
   // Discord Rich Presence Activity
   const activity = {
     details: parsedTitle.title,
     state: stateCapitalized,
     instance: true,
     largeImageKey: icons[randPick],
+    //largeImageKey: 'weebtrash',
     largeImageText: 'Weeb Trash',
   }
-  
+
   // Add episode information to RPC
   if (parsedTitle.episode) {
     activity.state += ` - Episode ${parsedTitle.episode}`
   }
-  
+
   // Time remaining in Anime
   const currentEpochSeconds = Date.now() / 1000
   if (vlc_status.state == 'playing') {
     const timeRemaining = Math.round(currentEpochSeconds + (vlc_status.length - vlc_status.time))
     activity.endTimestamp = timeRemaining
   } 
+
+  // Log message
+  logger.info(`${stateCapitalized} \"${parsedTitle.title}\" (${Math.floor(vlc_status.time/60)}:${vlc_status.time%60})`)
+
 
   // Update AniList when Anime is close to finishing
   if ((vlc_status.length - vlc_status.time) < 300 && updateAni) {
@@ -70,7 +78,7 @@ const setStatus = async () => {
     }
     updateAni = false
   }
-  
+
   // Set Discord Rich Presence
   rpc.setActivity(activity);
 }
@@ -84,4 +92,6 @@ rpc.on('ready', () => {
   }, 15e3)
 });
 
-rpc.login({ clientId }).catch(console.error);
+rpc.login({
+  clientId
+}).catch(console.error);
