@@ -18,6 +18,7 @@ const savedInfo = {
 }
 
 let updateAni = true
+let prevState = ''
 
 const setStatus = async () => {
   // Retrieve VLC Status
@@ -47,8 +48,8 @@ const setStatus = async () => {
     details: parsedTitle.title,
     state: stateCapitalized,
     instance: true,
-    largeImageKey: icons[randPick],
-    //largeImageKey: 'weebtrash',
+    //largeImageKey: icons[randPick],
+    largeImageKey: 'lolweeb',
     largeImageText: 'Weeb Trash',
   }
 
@@ -65,7 +66,10 @@ const setStatus = async () => {
   } 
 
   // Log message
-  logger.info(`${stateCapitalized} \"${parsedTitle.title}\" (${Math.floor(vlc_status.time/60)}:${vlc_status.time%60})`)
+  if (stateCapitalized !== prevState) {
+    logger.info(`${stateCapitalized} \"${parsedTitle.title}\" - Episode ${parsedTitle.episode}`)
+    prevState = stateCapitalized
+  }
 
 
   // Update AniList when Anime is close to finishing
