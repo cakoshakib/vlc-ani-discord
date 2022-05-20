@@ -41,10 +41,13 @@ const getEpisode = (details) => {
 };
 
 const splitDash = (title) => {
-  const parsedTitle = title.substring(0, title.indexOf("-")).trim();
+  const episodeRet = getEpisode(title);
+  const episode = episodeRet[1];
+  let titleMinusEp = episodeRet[0];
+  const parsedTitle = titleMinusEp
+    .substring(0, titleMinusEp.indexOf("-"))
+    .trim();
   const details = title.substring(title.indexOf("-") + 1).trim();
-
-  const episode = getEpisode(title)[1];
 
   return {
     title: parsedTitle,
